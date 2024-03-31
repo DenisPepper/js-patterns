@@ -9,9 +9,9 @@ const model = new Model();
 const presenter = new Presenter(model, input);
 
 if (decBtn) {
-    decBtn.addEventListener('click', () => presenter.handleDecreaseCount('DEC msg'));
+    decBtn.addEventListener('click', () => presenter.handleOnClickDecButton('DEC msg'));
 }
 
 if (incBtn) {
-    incBtn.addEventListener('click', () => presenter.handleIncreaseCount('INC msg'));
+    incBtn.addEventListener('click', () => presenter.handleOnClickIncButton('INC msg'));
 }
