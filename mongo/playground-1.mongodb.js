@@ -111,4 +111,7 @@ https://www.geeksforgeeks.org/mongodb-cursor/?ysclid=lwi4iq3fz7143630586
 db.collection.find().toArray()
 db.collection.find().forEach((doc) => {})
 
+db.collection.find({}, {name: 1}) -вернет документы, в которых будет только указанный ключ <name> (выберет только указанный ключ <name>)
+db.collection.find({}, {name: 0}) -вернет документы, в которых указанный ключ <name> будет исключен                                 
+
 */
