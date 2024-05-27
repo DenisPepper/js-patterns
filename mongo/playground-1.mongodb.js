@@ -117,5 +117,9 @@ db.collection.find().forEach((doc) => {})
 
 db.collection.find({}, {name: 1}) -вернет документы, в которых будет только указанный ключ <name> (выберет только указанный ключ <name>)
 db.collection.find({}, {name: 0}) -вернет документы, в которых указанный ключ <name> будет исключен                                 
-
+db.collection.findOne({key:"value"},).name -вернет значение поля <name>
+db.collection.findOne({key:"value1"}) -вернет документ, у которого ключ содержит либо значение, либо массив значение
+                                      - key: "value1", или key: ["value1", "value2"]
+db.collection.find({"user.name": "Denis"}) -найдет документы с отбором по свойству, которое указано через точечную нотацию  
+db.collection.findOne({name: "Denis"}).hobbies - найдет данные 
 */
