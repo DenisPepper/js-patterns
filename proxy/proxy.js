@@ -5,11 +5,15 @@ const target = {
   _password: '123456',
 };
 
+const throwError = (key) => {
+  throw new Error(`Свойство ${key} не найдено!`);
+};
+
 const handler = {
   get(target, key) {
     if (!target[key]) return;
 
-    if (key.startsWith('_')) throw new Error(`Свойство ${key} не найдено!`);
+    if (key.startsWith('_')) throwError(key);
 
     const value = target[key];
     return typeof value === 'function' ? value.bind(target) : value;
@@ -18,7 +22,7 @@ const handler = {
   set(target, key, value) {
     if (!target[key]) return;
 
-    if (key.startsWith('_')) throw new Error(`Свойство ${key} не найдено!`);
+    if (key.startsWith('_')) throwError(key);
 
     target[key] = value;
     return true;
@@ -27,10 +31,14 @@ const handler = {
   deleteProperty(target, key) {
     if (!target[key]) return;
 
-    if (key.startsWith('_')) throw new Error(`Свойство ${key} не найдено!`);
+    if (key.startsWith('_')) throwError(key);
 
     delete target[key];
     return true;
+  },
+
+  ownKeys(target) {
+    return Object.keys(target).filter((key) => !key.startsWith('_'));
   },
 };
 
