@@ -23,6 +23,15 @@ const handler = {
     target[key] = value;
     return true;
   },
+
+  deleteProperty(target, key) {
+    if (!target[key]) return;
+
+    if (key.startsWith('_')) throw new Error(`Свойство ${key} не найдено!`);
+
+    delete target[key];
+    return true;
+  },
 };
 
 const proxy = new Proxy(target, handler);
