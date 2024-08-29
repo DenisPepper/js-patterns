@@ -15,7 +15,7 @@ const handler = {
     return typeof value === 'function' ? value.bind(target) : value;
   },
 
-  set(target, prop, value) {
+  set(target, key, value) {
     if (!target[key]) return;
 
     if (key.startsWith('_')) throw new Error(`Свойство ${key} не найдено!`);
