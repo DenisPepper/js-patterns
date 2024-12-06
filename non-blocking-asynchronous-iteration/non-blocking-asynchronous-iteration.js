@@ -19,11 +19,12 @@ const forEach = (array, fn) => {
 };
 
 const taskId = runTask();
+const startTime = process.hrtime.bigint();
 
 forEach(numbers, (item, index) => {
   console.log(index);
   if (index === numbers.length - 1) {
     clearInterval(taskId);
-    printTimeDiff();
+    printTimeDiff(startTime);
   }
 });
