@@ -18,7 +18,8 @@ const forEach = (array, fn) => {
   next(index);
 };
 
-const taskId = runTask();
+const interval = 10;
+const taskId = runTask(interval);
 const startTime = process.hrtime.bigint();
 
 forEach(numbers, (item, index) => {
