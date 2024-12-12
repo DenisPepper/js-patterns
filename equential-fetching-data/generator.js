@@ -12,9 +12,9 @@ const urls = [
 ];
 
 function* gen(urls, arg) {
-  let result = arg;
+  let value = arg;
   for (const url of urls) {
-    result = yield fetchData(`${url}${result}`);
+    value = yield fetchData(`${url}${value}`);
   }
 }
 
