@@ -31,3 +31,6 @@ const getData = (getters, arg) => {
 };
 
 getData(gen(urls, INITIAL));
+
+// https://youtu.be/edaYw9UhQ0M?list=PLqFwRPueWb5efKytz2W8SnR5hG8LQcEpo
+// отправка запросов через async generator & for await 
