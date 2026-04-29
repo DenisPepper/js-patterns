@@ -41,8 +41,8 @@ function transform(jobs) {
         add(job, store);
     }
 
-    return Array.from(store, ([name, effect]) => {
-        return { name, prev: effect.prev, next: effect.next };
+    return Array.from(store, ([name, { prev, next }]) => {
+        return { name, prev, next };
     });
 }
 
