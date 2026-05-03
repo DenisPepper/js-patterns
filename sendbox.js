@@ -1,4 +1,4 @@
-class SimplePipeline {
+class AsyncPipeline {
     // ============ ПРИВАТНЫЕ ПОЛЯ ============
     #data = null;
     #outputFile = "result.txt";
@@ -12,8 +12,15 @@ class SimplePipeline {
         return this;
     }
 
-    #readFile() {
-        this.#data = `Содержимое файла ${this.#data}`;
+    async #readFile() {
+        await this.#delay(300);
+        this.#data = `Содержимое ${this.#data}`;
+        return this;
+    }
+
+    async #fetchExternalData() {
+        await this.#delay(400);
+        this.#data = this.#data + "\nДанные из внешнего API";
         return this;
     }
 
@@ -22,10 +29,14 @@ class SimplePipeline {
         return this;
     }
 
-    #save() {
-        // Здесь должна быть реальная запись в файл
-        // Например: await fs.writeFile(this.#outputFile, this.#data);
+    async #save() {
+        await this.#delay(200);
+        // Здесь сохранение в файл
         return this;
+    }
+
+    #delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     // ============ ПУБЛИЧНЫЕ МЕТОДЫ ============
@@ -37,8 +48,9 @@ class SimplePipeline {
 
     async execute() {
         try {
-            this.#getPath()
+            await this.#getPath()
                 .#readFile()
+                .#fetchExternalData()
                 .#process()
                 .#save();
 
@@ -50,17 +62,6 @@ class SimplePipeline {
 }
 
 // Использование
-const pipeline = new SimplePipeline();
-const result = await pipeline
-    .setOutputFile("my_result.txt")
+const result = await new AsyncPipeline()
+    .setOutputFile("output.txt")
     .execute();
-
-// Работа с результатом (без вывода в консоль)
-if (result.success) {
-    // Здесь можно использовать result.data по своему усмотрению
-    // Например, отправить на сервер или сохранить в переменную
-    const processedData = result.data;
-} else {
-    // Обработка ошибки
-    const errorMessage = result.error;
-}
