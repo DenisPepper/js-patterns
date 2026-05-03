@@ -1,102 +1,66 @@
-class StructuredPipeline {
-    // ============ 1. ПРИВАТНЫЕ ПОЛЯ - ДАННЫЕ ============
-    #data = null; // Текущие данные в пайплайне
-    #error = null; // Последняя ошибка
-    #isPaused = false; // Флаг паузы
-    #isRunning = false; // Флаг выполнения
+class SimplePipeline {
+    // ============ ПРИВАТНЫЕ ПОЛЯ ============
+    #data = null;
+    #outputFile = "result.txt";
 
-    // ============ 2. ПРИВАТНЫЕ ПОЛЯ - КОНФИГУРАЦИЯ ============
-    #config = {
-        debug: true,
-        encoding: "utf8",
-        outputFile: "result.txt",
-        backup: false,
-        maxSize: 10485760,
-        allowedExtensions: [".txt", ".md", ".json"],
-        retryCount: 3,
-        timeout: 30000,
-    };
+    // ============ ПРИВАТНЫЕ МЕТОДЫ ============
 
-    // ============ 3. ПРИВАТНЫЕ ПОЛЯ - МЕТРИКИ ============
-    #metrics = {
-        startTime: null,
-        endTime: null,
-        stepDurations: new Map(),
-        memoryUsage: [],
-        errors: [],
-    };
-
-    // ============ 4. ПРИВАТНЫЕ ПОЛЯ - ХУКИ ============
-    #hooks = {
-        onStepStart: null,
-        onStepEnd: null,
-        onError: null,
-        onComplete: null,
-    };
-
-    // ============ ПРИВАТНЫЕ МЕТОДЫ (ШАГИ ПАЙПЛАЙНА) ============
-    #setPath() {/* ... */}
-    #loadFile() {/* ... */}
-    #processData() {/* ... */}
-    #validateResult() {/* ... */}
-    async #saveToFile() {/* ... */}
-    async #createBackup() {/* ... */}
-    #cleanup() {/* ... */}
-    #generateReport() {/* ... */}
-
-    // ============ ПРИВАТНЫЕ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ============
-    #log(message) {/* ... */}
-    #delay(ms) {/* ... */}
-    #reset() {/* ... */}
-    #startStep(stepName) {/* ... */}
-    #endStep(stepName) {/* ... */}
-    #trackMemory() {/* ... */}
-
-    // ============ ПУБЛИЧНЫЕ МЕТОДЫ - КОНФИГУРАЦИЯ ============
-    setDebug(enabled) {/* ... */}
-    setOutputFile(filename) {/* ... */}
-    setEncoding(encoding) {/* ... */}
-    setMaxSize(bytes) {/* ... */}
-    enableBackup(enable = true) {/* ... */}
-    setAllowedExtensions(extensions) {/* ... */}
-    setRetryCount(count) {/* ... */}
-    setTimeout(ms) {/* ... */}
-
-    // ============ ПУБЛИЧНЫЕ МЕТОДЫ - ХУКИ ============
-    onStepStart(callback) {
-        this.#hooks.onStepStart = callback;
+    #getPath() {
+        const path = prompt("Введите путь к файлу:");
+        if (!path) throw new Error("Путь не указан");
+        this.#data = path;
         return this;
     }
 
-    onStepEnd(callback) {
-        this.#hooks.onStepEnd = callback;
+    #readFile() {
+        this.#data = `Содержимое файла ${this.#data}`;
         return this;
     }
 
-    onError(callback) {
-        this.#hooks.onError = callback;
+    #process() {
+        this.#data = this.#data.toUpperCase();
         return this;
     }
 
-    // ============ ПУБЛИЧНЫЕ МЕТОДЫ - УПРАВЛЕНИЕ ============
-    pause() {/* ... */}
-    resume() {/* ... */}
+    #save() {
+        // Здесь должна быть реальная запись в файл
+        // Например: await fs.writeFile(this.#outputFile, this.#data);
+        return this;
+    }
 
-    // ============ ПУБЛИЧНЫЙ МЕТОД - ВЫПОЛНЕНИЕ ============
-    async execute() {/* ... */}
+    // ============ ПУБЛИЧНЫЕ МЕТОДЫ ============
 
-    // ============ ПУБЛИЧНЫЕ МЕТОДЫ - ИНФОРМАЦИЯ ============
-    getConfig() {/* ... */}
-    getMetrics() {/* ... */}
-    showPlan() {/* ... */}
+    setOutputFile(filename) {
+        this.#outputFile = filename;
+        return this;
+    }
+
+    async execute() {
+        try {
+            this.#getPath()
+                .#readFile()
+                .#process()
+                .#save();
+
+            return { success: true, data: this.#data };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
 }
 
 // Использование
-const pipeline = new StructuredPipeline();
+const pipeline = new SimplePipeline();
 const result = await pipeline
-    .setDebug(true)
-    .setOutputFile("output.txt")
-    .enableBackup(true)
-    .onStepStart((stepName) => console.log(`Начинаем шаг: ${stepName}`))
-    .onError((error) => console.error(`Ошибка: ${error.message}`))
+    .setOutputFile("my_result.txt")
     .execute();
+
+// Работа с результатом (без вывода в консоль)
+if (result.success) {
+    // Здесь можно использовать result.data по своему усмотрению
+    // Например, отправить на сервер или сохранить в переменную
+    const processedData = result.data;
+} else {
+    // Обработка ошибки
+    const errorMessage = result.error;
+}
