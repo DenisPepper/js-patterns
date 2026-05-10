@@ -29,6 +29,7 @@ export class Consumer {
     }
 }
 
+// 👇 Использование
 const consumer = new Consumer();
 consumer.addBeforeHandler((user) => console.log(`Hello, ${user.name}!`));
 consumer.addAfterHandler((user) => console.log(`Goodbye, ${user.name}!`));
