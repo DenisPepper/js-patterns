@@ -15,7 +15,7 @@ export class EventManager {
         this.#events = new Map();
     }
 
-    getNames() {
+    getEventNames() {
         return this.#nameStore;
     }
 
@@ -42,7 +42,7 @@ export class EventManager {
 /*
 // 👇 Использование
 const manager = new EventManager();
-const on = manager.getNames();
+const on = manager.getEventNames();
 
 // usage
 manager.add(on.default, (user) => console.log(`Email: ${user.name}`));

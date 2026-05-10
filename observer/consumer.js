@@ -1,41 +1,26 @@
 import { EventManager } from "./event-manager.js";
 
-const NameStore = {
-    greeting: "GREETING",
-    parting: "PARTING",
+const Jobs = {
+    AFTER_USER_LOGIN: "AFTER_USER_LOGIN",
+    AFTER_USER_LOGOUT: "AFTER_USER_LOGOUT",
 };
 
 export class Consumer {
     #eventManager = null;
 
     constructor() {
-        this.#eventManager = new EventManager(NameStore);
+        this.#eventManager = new EventManager(Jobs);
     }
 
-    addBeforeHandler(fn) {
-        this.#eventManager.add(NameStore.greeting, fn);
+    jobs() {
+        return this.#eventManager.getEventNames();
     }
 
-    addAfterHandler(fn) {
-        this.#eventManager.add(NameStore.parting, fn);
+    keep(key, fn) {
+        this.#eventManager.add(key, fn);
     }
 
-    greeting(args) {
-        this.#eventManager.use(NameStore.greeting, args);
-    }
-
-    parting(args) {
-        this.#eventManager.use(NameStore.parting, args);
+    call(key, args) {
+        this.#eventManager.use(key, args);
     }
 }
-
-// 👇 Использование
-const consumer = new Consumer();
-consumer.addBeforeHandler((user) => console.log(`Hello, ${user.name}!`));
-consumer.addAfterHandler((user) => console.log(`Goodbye, ${user.name}!`));
-
-const users = [{ name: "Denis" }, { name: "Nicole" }];
-users.forEach((user) => {
-    consumer.greeting(user);
-    consumer.parting(user);
-});
