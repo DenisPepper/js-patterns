@@ -50,5 +50,7 @@ manager.add(on.default, (user) => console.log(`Entry: ${user.name}`));
 
 // call hook
 manager.use(on.default, { name: "Denis" });
+
+// look at the name store
 console.log(on);
 */
