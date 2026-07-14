@@ -1,15 +1,14 @@
 import { EventManager } from "./event-manager.js";
 
-const Jobs = {
-    AFTER_USER_LOGIN: "AFTER_USER_LOGIN",
-    AFTER_USER_LOGOUT: "AFTER_USER_LOGOUT",
-};
-
 export class Consumer {
     #eventManager = null;
+    #jobs = {
+        AFTER_USER_LOGIN: "AFTER_USER_LOGIN",
+        AFTER_USER_LOGOUT: "AFTER_USER_LOGOUT",
+    };
 
     constructor() {
-        this.#eventManager = new EventManager(Jobs);
+        this.#eventManager = new EventManager(this.#jobs);
     }
 
     jobs() {
