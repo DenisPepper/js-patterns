@@ -63,4 +63,5 @@ const dependencies = [
 ];
 
 const data = transform(dependencies);
-console.dir(data, { depth: null });
+//console.dir(data, { depth: null });
+console.log(JSON.stringify(data));
