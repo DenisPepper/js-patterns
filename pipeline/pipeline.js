@@ -48,12 +48,10 @@ class AsyncPipeline {
 
     async execute() {
         try {
-            await this.#getPath()
-                .#readFile()
-                .#fetchExternalData()
-                .#process()
-                .#save();
-
+            this.#getPath();
+            await this.#readFile();
+            await this.#fetchExternalData();
+            this.#process().#save();
             return { success: true, data: this.#data };
         } catch (error) {
             return { success: false, error: error.message };
@@ -62,6 +60,4 @@ class AsyncPipeline {
 }
 
 // Использование
-const result = await new AsyncPipeline()
-    .setOutputFile("output.txt")
-    .execute();
+const result = await new AsyncPipeline().setOutputFile("output.txt").execute();
